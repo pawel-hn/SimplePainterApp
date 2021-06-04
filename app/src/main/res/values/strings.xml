@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SimplePainterApp</string>
+    <string name="small_brush">small brush</string>
+    <string name="medium_brush">medium brush</string>
+    <string name="big_brush">big brush</string>
+    <string name="brush_size">brush size</string>
+    <string name="label">Simple Painter App</string>
+    <string name="clear_all_warning">This will clear all paintings. This action can not be undone.</string>
+    <string name="clear_all">Clear All</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="toast_clear">No paintings to clear</string>
+</resources>

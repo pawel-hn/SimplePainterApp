@@ -1,0 +1,2 @@
+rootProject.name = "SimplePainterApp"
+include ':app'

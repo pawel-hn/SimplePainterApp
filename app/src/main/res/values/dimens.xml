@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="btn_brush_small">10dp</dimen>
+    <dimen name="btn_brush_medium">20dp</dimen>
+    <dimen name="btn_brush_big">30dp</dimen>
+    <dimen name="bottom_buttons_margin">4dp</dimen>
+    <dimen name="buttons_background_size">40dp</dimen>
+
+    <dimen name="brush_size_small">10F</dimen>
+    <dimen name="brush_size_medium">20F</dimen>
+    <dimen name="brush_size_big">30F</dimen>
+
+
+</resources>
