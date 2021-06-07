@@ -3,12 +3,16 @@ package pawel.hn.simplepainterapp
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.slider.Slider
 import pawel.hn.simplepainterapp.databinding.FragmentDrawBinding
+import kotlin.math.roundToInt
 
 class DrawFragment : Fragment(R.layout.fragment_draw) {
 
@@ -22,7 +26,7 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
         binding.apply {
             customView.setBrushSize(resources.getFloat(R.dimen.brush_size_small))
             btnBrushSize.setOnClickListener {
-                showBrushSizeDialog()
+                showBrushSizeDialogNew()
             }
 
             colorSlider.setGradient(resources.getIntArray(R.array.colors), 500)
@@ -54,32 +58,51 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
                }
             }
         }
-        super.onViewCreated(view, savedInstanceState)
+       //super.onViewCreated(view, savedInstanceState)
+
+        setHasOptionsMenu(true)
     }
 
-    private fun showBrushSizeDialog() {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        // super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun showBrushSizeDialogNew() {
         val dialog = Dialog(requireContext()).apply {
-
-            setContentView(R.layout.dialog_brush_size)
-
-            //button brush small
-            findViewById<ImageButton>(R.id.btn_small).setOnClickListener {
-                binding.customView.setBrushSize(resources.getFloat(R.dimen.brush_size_small))
-                dismiss()
-            }
-
-            //button brush medium
-            findViewById<ImageButton>(R.id.btn_medium).setOnClickListener {
-                binding.customView.setBrushSize(resources.getFloat(R.dimen.brush_size_medium))
-                dismiss()
-            }
-
-            //button brush big
-            findViewById<ImageButton>(R.id.btn_big).setOnClickListener {
-                binding.customView.setBrushSize(resources.getFloat(R.dimen.brush_size_big))
-                dismiss()
-            }
+            setContentView(R.layout.dialog_brush)
         }
+
+
+        val sizeSlider = dialog.findViewById<Slider>(R.id.brush_size_slider)
+        val imageBrush = dialog.findViewById<ImageView>(R.id.image_brush)
+        val imageParams = imageBrush.layoutParams
+
+        val size = binding.customView.getBrushSize()
+        val factor = resources.displayMetrics.density
+        val sizeDp = size / factor
+
+        sizeSlider.value = sizeDp.roundToInt().toFloat()
+        imageParams.height = size.toInt()
+        imageParams.width = size.toInt()
+        imageBrush.layoutParams = imageParams
+
+
+        Log.d("PHN", "size: $size")
+        Log.d("PHN", "size: $sizeDp")
+        Log.d("PHN", "factor: $factor")
+
+        sizeSlider.addOnChangeListener { _, value, _ ->
+
+            imageParams.height = (value * factor).toInt()
+            imageParams.width = (value * factor).toInt()
+            imageBrush.layoutParams = imageParams
+
+            binding.customView.setBrushSize(value)
+        }
+
         dialog.show()
     }
+
+
 }

@@ -3,7 +3,6 @@ package pawel.hn.simplepainterapp
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -44,7 +43,6 @@ class DrawView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     override fun onDraw(canvas: Canvas?) {
-        Log.d("PHN", "onDraw called")
         canvas?.drawBitmap(canvasBitmap, 0F, 0F, canvasPaint)
 
         drawPaths.forEach {
@@ -69,6 +67,8 @@ class DrawView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     brushThickness = brushSize
                     reset()
                     moveTo(touchX!!, touchY!!)
+                    drawPath.lineTo(touchX, touchY)
+
                 }
             }
             MotionEvent.ACTION_MOVE -> {
@@ -96,6 +96,8 @@ class DrawView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     fun setColor(color: String) {
         paintColor = Color.parseColor(color)
     }
+
+    fun getBrushSize(): Float = brushSize
 
     fun undo() {
         if (drawPaths.isNotEmpty()) {

@@ -10,4 +10,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="toast_clear">No paintings to clear</string>
+    <string name="load_image">Load image</string>
+    <string name="save_image">Save image</string>
+    <string name="share_image">Share image</string>
 </resources>
