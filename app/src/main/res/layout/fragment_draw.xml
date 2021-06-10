@@ -6,14 +6,29 @@
     android:layout_margin="2dp">
 
 
-    <pawel.hn.simplepainterapp.DrawView
-        android:id="@+id/custom_view"
+    <FrameLayout
+        android:id="@+id/frame_Layout_draw"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageview_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/background_image" />
+
+        <pawel.hn.simplepainterapp.DrawView
+            android:id="@+id/custom_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#50FFFFFF"
+             />
+
+    </FrameLayout>
 
     <View
         android:id="@+id/view"
@@ -78,6 +93,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:contentDescription="@string/brush_size"
         app:tint="@color/black" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
 
 
 
