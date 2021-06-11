@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_SimplePainterApp)
         setContentView(R.layout.activity_main)
 
         val appBarConfiguration = AppBarConfiguration.Builder(R.id.drawFragment).build()
