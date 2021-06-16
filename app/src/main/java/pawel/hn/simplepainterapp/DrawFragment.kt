@@ -13,9 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -48,7 +46,7 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
     private lateinit var binding: FragmentDrawBinding
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var loadImage: ActivityResultLauncher<String>
-    var imageSave = false
+    private var imageSaved = false
     private lateinit var imageBitmap: Bitmap
     private var uriPath: Any? = null
 
@@ -70,6 +68,10 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
         setHasOptionsMenu(true)
     }
 
+
+    /**
+    * Called on viewCreated, sets all elements of the UI.
+     */
     private fun setUi(binding: FragmentDrawBinding) {
         binding.apply {
             customView.setBrushSize(resources.getFloat(R.dimen.brush_size_small))
@@ -136,28 +138,8 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
     }
 
     private fun shareImage() {
-        if (imageSave) {
-            Log.d("PHN", "path share $uriPath")
-            Log.d("PHN", "path share string ${uriPath.toString()}")
-//            MediaScannerConnection.scanFile(
-//                requireContext(), arrayOf(uriPath.toString()), arrayOf(MIME_TYPE)) { _, uri ->
-//                val shareIntent = Intent().apply {
-//                    action = Intent.ACTION_SEND
-//                    putExtra(Intent.EXTRA_STREAM, uri)
-//                    type = MIME_TYPE
-//                }
-//                Log.d("PHN", "media uri: $uri")
-//                startActivity(Intent.createChooser(shareIntent, "Share image"))
-//            }
-
-            Log.d("PHN", "path share string ${convertPath(uriPath.toString())}")
-
-
-            val contextExternalPics = context?.getExternalFilesDir(DIRECTORY_PICTURES)
-            Log.d("PHN", "contextExternalPics $contextExternalPics")
-
+        if (imageSaved) {
             val file = File((uriPath as Uri).path!!)
-            Log.d("PHN", "abs ${file.absolutePath}")
             val uriFileProvider = FileProvider.getUriForFile(requireContext(), MY_AUTHORITY, file)
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -205,7 +187,7 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
                     saveImageToMemory(requireContext(), binding.frameLayoutDraw)
                 }
                 Toast.makeText(requireContext(), "Image saved", Toast.LENGTH_SHORT).show()
-                imageSave = true
+                imageSaved = true
             }
 
             shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
@@ -223,8 +205,7 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
 
     @Suppress("DEPRECATION")
     private fun saveImageToMemory(context: Context, view: View) {
-        var pathDir = ""
-        val pathCont: String
+
         val title = "SimpleDraw_${System.currentTimeMillis()}.jpg"
         val fos: OutputStream?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -238,18 +219,15 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
             uriPath =
                 contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
-
             fos = uriPath?.let { contentResolver.openOutputStream(it as Uri) }
-            pathCont = uriPath.toString()
-            Log.d("PHN", "path cont: $pathCont")
+
         } else {
             val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val image = File(dir, title)
             uriPath = image.absolutePath
-            pathDir = image.absolutePath
             fos = FileOutputStream(image)
         }
-        Log.d("PHN", "path dir: $pathDir")
+
         imageBitmap = getBitmapFromView(view)
         fos.use {
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
@@ -295,10 +273,6 @@ class DrawFragment : Fragment(R.layout.fragment_draw) {
         }
         dialog.show()
     }
-
-
-    private fun convertPath(path: String): String = path.substring(path.indexOf(':') + 1)
-
 
 }
 

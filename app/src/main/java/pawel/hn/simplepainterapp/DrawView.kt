@@ -7,6 +7,9 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
+/**
+ * Custom view, which allows drawing.
+ */
 class DrawView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private lateinit var drawPath: CustomPath
@@ -35,7 +38,6 @@ class DrawView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         brushSize = resources.getFloat(R.dimen.brush_size_small)
     }
 
-    // called when
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)

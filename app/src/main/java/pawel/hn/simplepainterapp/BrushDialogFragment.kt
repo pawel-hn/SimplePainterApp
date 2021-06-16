@@ -1,1 +1,0 @@
-package pawel.hn.simplepainterapp
